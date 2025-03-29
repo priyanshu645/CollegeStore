@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CollegeStore - Buy & Sell for Students</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobo.css">
     <script defer src="script.js"></script>
 </head>
 <body>
@@ -12,19 +13,20 @@
     <!-- Navigation Bar -->
     <header>
         <h1>CollegeStore</h1>
-        <nav>
+        <div class="mobile-menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <nav class="nav" id="nav-menu">
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Buy</a></li>
-                <li><a href="#">Sell</a></li>
+                <li><a href="buy-section.html">Buy</a></li>
+                <li><a href="sell-section.html">Sell</a></li>
                 <li><a href="#">Donate</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="login.html">Login</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="background-color:beige;">
         <h2>Buy, Sell & Donate Student Materials</h2>
         <p>Find the best deals on books, gadgets, and more. Support your campus community.</p>
         <input type="text" placeholder="Search for books, gadgets, etc..." id="search-bar">
@@ -38,22 +40,27 @@
             <div class="item">
                 <img src="Engg.Math.jpeg" alt="Book">
                 <p>Engineering Mathematics - ₹350</p>
+                <button class="buy-btn">Buy Now</button>
             </div>
             <div class="item">
                 <img src="DellLaptop.jpeg" alt="Laptop">
                 <p>Dell Laptop - ₹25,000</p>
+                <button class="buy-btn">Buy Now</button>
             </div>
             <div class="item">
                 <img src="calculator.jpeg" alt="Calculator">
                 <p>Scientific Calculator - ₹500</p>
+                <button class="buy-btn">Buy Now</button>
             </div>
             <div class="item">
                 <img src="apron.jpg" alt="Apron">
                 <p>Apron - ₹40</p>
+                <button class="buy-btn">Buy Now</button>
             </div>
             <div class="item">
                 <img src="edKit.jpg" alt="Ed Kit">
-                <p>Ed Kit - ₹45</p>
+                <p>T-Scale - ₹45</p>
+                <button class="buy-btn">Buy Now</button>
             </div>
         </div>
     </section>
@@ -62,18 +69,20 @@
     <section class="cta">
         <div class="box buy">
             <h3>Looking to Buy?</h3>
-            <p>Find the best second-hand deals from students near you.</p>
-            <button>Browse Listings</button>
+            <p>Find the best deals from students near you.</p>
+            <!--<button class="buy-btn"><a href="buy-section.html">Browse Listings</a></button>
+            <button>Browse Listings</button>-->
+            <a href="buy-section.html" class="btn">Browse Listings</a>
         </div>
         <div class="box sell">
             <h3>Want to Sell?</h3>
             <p>Post your used books, gadgets, and accessories easily.</p>
-            <button>Sell Now</button>
+            <a href="sell-section.html" class="btn">Sell Now</a>
         </div>
         <div class="box donate">
             <h3>Donate & Help</h3>
             <p>Support students by donating your unused materials.</p>
-            <button>Donate Now</button>
+            <a href="#" class="btn">Donate Now</a>
         </div>
     </section>
 
@@ -81,6 +90,17 @@
     <footer>
         <p>&copy; 2025 CollegeStore | Made for Students</p>
     </footer>
+    <script>
+        // Toggle mobile menu display
+        function toggleMenu() {
+          var menu = document.getElementById('nav-menu');
+          if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+          } else {
+            menu.style.display = 'block';
+          }
+        }
+      </script>
 
 </body>
 </html>

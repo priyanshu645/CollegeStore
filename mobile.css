@@ -1,0 +1,208 @@
+/* Mobile Responsive Styles */
+
+/* Base mobile breakpoint */
+@media (max-width: 768px) {
+    /* Header & Navigation */
+    header {
+        flex-direction: column;
+        padding: 10px 5px;
+    }
+    
+    header h1 {
+        margin: 0 0 10px 0;
+        font-size: 1.8rem;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        margin: 0;
+        width: 100%;
+    }
+    
+    nav ul li {
+        margin: 5px 0;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        width: 100%;
+    }
+    
+    nav ul li:last-child {
+        border-bottom: none;
+    }
+    
+    /* Hero Section */
+    .hero {
+        padding: 30px 15px;
+    }
+    
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+    
+    .hero p {
+        font-size: 0.9rem;
+    }
+    
+    .hero input {
+        width: 90%;
+        margin: 10px 0;
+    }
+    
+    .hero button {
+        width: 90%;
+        margin: 5px 0;
+    }
+    
+    /* Featured Listings */
+    .items {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .item {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+    
+    /* Call-to-Action Section */
+    .cta {
+        flex-direction: column;
+        align-items: center;
+        margin: 15px;
+    }
+    
+    .box {
+        width: 90%;
+        margin-bottom: 15px;
+    }
+    
+    /* Auth Container */
+    .auth-container {
+        width: 90%;
+        margin: 50px auto;
+    }
+}
+
+/* Small mobile breakpoint */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.3rem;
+    }
+    
+    .hero p {
+        font-size: 0.8rem;
+    }
+    
+    .item {
+        width: 95%;
+    }
+    
+    .box {
+        width: 95%;
+    }
+}
+
+/* Mobile Menu Toggle */
+@media (max-width: 768px) {
+    /* Hide the full menu initially */
+    nav ul {
+        display: none;
+        animation: slideDown 0.3s ease-out forwards;
+    }
+    
+    /* Create mobile menu toggle button */
+    header::before {
+        content: '☰';
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    
+    /* Show menu when header is clicked */
+    header.active ul {
+        display: flex;
+    }
+    
+    /* Change toggle icon when active */
+    header.active::before {
+        content: '✕';
+    }
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+    .buy-btn, 
+    .btn,
+    nav ul li a {
+        padding: 12px 20px;
+        margin: 5px 0;
+    }
+    
+    input, 
+    button {
+        height: 44px; /* Minimum recommended touch target size */
+    }
+}
+
+/* Optimize images for mobile */
+@media (max-width: 768px) {
+    .item img {
+        max-height: 120px;
+    }
+}
+
+/* Improve form elements on mobile */
+@media (max-width: 768px) {
+    input, 
+    button, 
+    .btn {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+}
+
+/* Add scroll-to-top button for mobile */
+.scroll-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0056b3;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    z-index: 100;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .scroll-top {
+        display: block;
+    }
+}
+
+/* Mobile-specific animations */
+@media (max-width: 768px) {
+    /* Lighter animations for better performance */
+    .item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+    
+    /* Remove some hover effects that don't work well on touch devices */
+    nav ul li a::after {
+        display: none;
+    }
+}

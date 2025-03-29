@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CollegeStore - Sell Items</title>
+  <link rel="stylesheet" href="sell-section.css">
+</head>
+<body>
+  <section class="sell-section">
+    <div class="container">
+      <h2>Sell Your Item</h2>
+      <form class="sell-form">
+        <label for="item-name">Item Name:</label>
+        <input type="text" id="item-name" name="item-name" placeholder="Enter item name" required>
+
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+          <option value="books">Books</option>
+          <option value="electronics">Electronics</option>
+          <option value="stationery">Stationery</option>
+          <option value="others">Others</option>
+        </select>
+
+        <label for="price">Price (Rs):</label>
+        <input type="number" id="price" name="price" placeholder="Enter price" required>
+
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+
+        <button type="submit" class="sell-btn">Post Item</button>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

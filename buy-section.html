@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CollegeStore - Buy Items</title>
+    <link rel="stylesheet" href="buy-section.css">
+    <link rel="stylesheet" href="mobo.css">
+</head>
+<body style="background-color:beige">
+    <section class="buy-section" style="background-color:aliceblue">
+        <div class="container" style="background-color: bisque;">
+            <h2>Buy Items</h2>
+            
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <label for="category">Filter by Category:</label>
+                <select id="category" onchange="filterItems()">
+                    <option value="all">All</option>
+                    <option value="books">Books</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="stationery">Stationery</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
+
+            <!-- Product Listings -->
+            <div class="product-list">
+                
+                <!-- Books -->
+                <div class="product-item" data-category="books">
+                    <img src="./images/algo.jpeg" alt="Book">
+                    <h3>Introduction to Algorithms</h3>
+                    <p>Rs. 500</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <div class="product-item" data-category="books">
+                    <img src="./images/dsaC.jpeg" alt="Book">
+                    <h3>Data Structures in C</h3>
+                    <p>Rs. 350</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <!-- Electronics -->
+                <div class="product-item" data-category="electronics">
+                    <img src="./images/boat370.jpeg" alt="Headphones">
+                    <h3>Boat Headphone</h3>
+                    <p>Rs. 900</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <div class="product-item" data-category="electronics">
+                    <img src="calculator.jpeg" alt="Calculator">
+                    <h3>Scientific Calculator</h3>
+                    <p>Rs. 500</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <!-- Stationery -->
+                <div class="product-item" data-category="stationery">
+                    <img src="./images/table.jpg" alt="Study Table">
+                    <h3>Study Table</h3>
+                    <p>Rs. 550</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <div class="product-item" data-category="stationery">
+                    <img src="./images/EdKit.jpg" alt="ED Kit">
+                    <h3>ED Kit</h3>
+                    <p>Rs. 80</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <!-- Others -->
+                <div class="product-item" data-category="others">
+                    <img src="./images/bag.jpeg" alt="Backpack">
+                    <h3>College Backpack</h3>
+                    <p>Rs. 800</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+                <div class="product-item" data-category="others">
+                    <img src="./images/lamp.jpeg" alt="Study Lamp">
+                    <h3>LED Study Lamp</h3>
+                    <p>Rs. 650</p>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Request Product Section -->
+    <section class="request-section" style="background-color:rgb(80, 88, 77);">
+        <div class="container">
+            <h2>Request a Product</h2>
+            <form id="request-form" >
+                <label for="product-name">Product Name:</label>
+                <input type="text" id="product-name" required>
+
+                <label for="product-category">Category:</label>
+                <select id="product-category">
+                    <option value="books">Books</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="stationery">Stationery</option>
+                    <option value="others">Others</option>
+                </select>
+
+                <label for="product-description">Description:</label>
+                <textarea id="product-description" rows="1" required></textarea>
+
+                <button type="submit">Submit Request</button>
+            </form>
+            <p id="request-message"></p>
+        </div>
+    </section>
+
+    <script src="buy-section.js"></script>
+
+</body>
+</html>
