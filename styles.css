@@ -255,94 +255,6 @@ footer {
     margin-top: 20px;
     animation: fadeIn 0.8s ease-in-out;
 }
-
-.auth-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 20px;
-    background: #f4f4f4;
-    text-align: center;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    animation: fadeInUp 0.8s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        transform: translateY(30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.auth-container input {
-    display: block;
-    width: 90%;
-    padding: 10px;
-    margin: 10px auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.auth-container input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-    outline: none;
-}
-
-.auth-container button {
-    background: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.auth-container button:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.auth-container button:active {
-    transform: translateY(0);
-}
-
-.auth-container a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    display: inline-block;
-    margin-top: 15px;
-    position: relative;
-}
-
-.auth-container a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: #0056b3;
-    transition: width 0.3s ease;
-}
-
-.auth-container a:hover {
-    color: #0056b3;
-}
-
-.auth-container a:hover::after {
-    width: 100%;
-}
-
 /* Buy Button */
 .buy-btn {
     background: #007bff;
@@ -533,5 +445,12 @@ footer {
       .cta-box {
         width: 80%;
       }
-      
+      .featured .item{
+        width: 100%;
+        max-width: 200px;
+      }
+      .featured .items {
+        display: flex;
+        flex-wrap: wrap;
+      }
     }
