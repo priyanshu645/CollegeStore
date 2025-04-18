@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Store - Buy Products</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header styles */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/400') center/cover;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 2rem;
+            background-color: #2c3e50;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Category filter */
+        .category-filter {
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1rem;
+            background-color: #f1f8fe;
+            border: 1px solid #3498db;
+            border-radius: 20px;
+            color: #3498db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover, .filter-button.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* Products section */
+        .products-section {
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            height: 200px;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .product-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3498db;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-content h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-content p {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .add-to-cart {
+            padding: 0.5rem 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #2980b9;
+        }
+        /* Request form */
+        .request-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/600') center/cover fixed;
+            color: white;
+        }
+
+        .request-section .section-title {
+            color: white;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #3498db;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /*.social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }*/
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Hide products based on filter */
+        .product-card.hidden {
+            display: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .products-container {
+                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            }
+
+            .featured-items {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <div class="logo">College Store</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">Shop</a>
+            <a href="donate.html">Donate</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="checkout.html" class="cart-container" id="cart-icon" style="text-decoration: none; color: inherit;">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-badge" id="cart-badge">0</span>
+            </a>            
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="hero">
+            <h1>Shop Affordable Educational Materials</h1>
+            <p>Browse our collection of affordable books, stationery, electronics, and lab equipment. All items are donated by fellow students or available at discounted prices.</p>
+            <a href="#products" class="cta-button">Start Shopping</a>
+        </div>
+    </header>
+
+    <!-- Category Filter -->
+    <section class="category-filter">
+        <div class="filter-container">
+            <h3 class="filter-title">Filter by Category:</h3>
+            <div class="filter-buttons">
+                <button class="filter-button active" data-category="all">All</button>
+                <button class="filter-button" data-category="books">Books</button>
+                <button class="filter-button" data-category="stationery">Stationery</button>
+                <button class="filter-button" data-category="electronics">Electronics</button>
+                <button class="filter-button" data-category="lab">Lab Equipment</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <h2 class="section-title">Available Products</h2>
+        <div class="products-container">
+            <!-- Books -->
+            <div class="product-card" data-category="books">
+                <div class="product-img" style="background-image: url(./images/calculus.jpg)">
+                    <span class="product-category">Books</span>
+                </div>
+                <div class="product-content">
+                    <h3>Calculus: Early Transcendentals (Free)</h3>
+                    <p>8th Edition, James Stewart. Excellent condition with minimal highlighting.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹00.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="books">
+                <div class="product-img" style="background-image: url(./images/algo.jpeg)">
+                    <span class="product-category">Books</span>
+                </div>
+                <div class="product-content">
+                    <h3>Introduction to Algorithms</h3>
+                    <p>CLRS, 3rd Edition. Like new condition, never used.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹450.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stationery -->
+            <div class="product-card" data-category="stationery">
+                <div class="product-img" style="background-image: url(./images/991ms.jpeg)">
+                    <span class="product-category">Stationery</span>
+                </div>
+                <div class="product-content">
+                    <h3>Scientific Calculator</h3>
+                    <p>CASIO FX-991MS Scientific Scientific Calculator  (12 Digit), gently used with all functions working.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹500.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="stationery">
+                <div class="product-img" style="background-image: url(./images/bundle.jpg)">
+                    <span class="product-category">Stationery</span>
+                </div>
+                <div class="product-content">
+                    <h3>Classmate Notebook Bundle (Donated)</h3>
+                    <p>Set of 4 college-ruled notebooks with hardcovers. Brand new.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹0.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Electronics -->
+            <div class="product-card" data-category="electronics">
+                <div class="product-img" style="background-image: url('DellLaptop.jpeg')">
+                    <span class="product-category">Electronics</span>
+                </div>
+                <div class="product-content">
+                    <h3>Dell Laptop</h3>
+                    <p>Dell Inspiron 15, 8GB RAM, 256GB SSD, i5 processor. Recently refurbished.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹25,000.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="electronics">
+                <div class="product-img" style="background-image: url('./images/boat370.jpeg')">
+                    <span class="product-category">Electronics</span>
+                </div>
+                <div class="product-content">
+                    <h3>Wireless Headphones</h3>
+                    <p>Sony WH-1000XM3 Noise Cancelling Headphones. Lightly used.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹700.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lab Equipment -->
+            <div class="product-card" data-category="lab">
+                <div class="product-img" style="background-image: url('apron.jpg')">
+                    <span class="product-category">Lab Equipment</span>
+                </div>
+                <div class="product-content">
+                    <h3>Lab Coat</h3>
+                    <p>Mechanical Lab coat, size M. Used for one semester only.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹40.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="lab">
+                <div class="product-img" style="background-image: url(./images/google.webp)">
+                    <span class="product-category">Lab Equipment</span>
+                </div>
+                <div class="product-content">
+                    <h3>Chemistry Goggles (Donated)</h3>
+                    <p>Safety goggles for chemistry lab. Used for few times.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹0.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card" data-category="lab">
+                <div class="product-img" style="background-image: url(edKit.jpg)">
+                    <span class="product-category">Lab Equipment</span>
+                </div>
+                <div class="product-content">
+                    <h3>Chemistry Goggles</h3>
+                    <p>T-Scale for ED lab. Used for one semester.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹35.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card" data-category="books">
+                <div class="product-img" style="background-image: url(Engg.Math.jpeg)">
+                    <span class="product-category">Books</span>
+                </div>
+                <div class="product-content">
+                    <h3>Engineering Mathematics</h3>
+                    <p>8th Edition (1 january 2019). Excellent condition with minimal highlighting.</p>
+                    <div class="product-footer">
+                        <span class="product-price">₹350.00</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Request Form -->
+    <section class="request-section" id="request-form">
+        <h2 class="section-title">Can't Find What You Need?</h2>
+        <div class="form-container">
+            <p style="margin-bottom: 1.5rem; text-align: center;">Submit a request for specific educational materials, and we'll notify you when they become available.</p>
+            <form>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Your name" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Your email" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" class="form-control" placeholder="Specific title or model number if known" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Product Category</label>
+                    <select id="category" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="books">Books & Textbooks</option>
+                        <option value="stationery">Stationery</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="lab">Lab Equipment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Detailed Description</label>
+                    <textarea id="description" class="form-control" rows="4" placeholder="Please provide specific details about the item you're looking for..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="urgency">How soon do you need this?</label>
+                    <select id="urgency" class="form-control">
+                        <option value="not-urgent">Not urgent - Within the next few months</option>
+                        <option value="soon">Soon - Within the next few weeks</option>
+                        <option value="urgent">Urgent - As soon as possible</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget Range ($)</label>
+                    <input type="text" id="budget" class="form-control" placeholder="Maximum amount you're willing to spend">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="cta-button" style="border: none; cursor: pointer; width: 100%;">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo" style="margin-bottom: 1rem;">College Store</div>
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Shop</a>
+            <a href="#">Donate</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="social-links">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">in</a>
+            <a href="#" class="social-icon">ig</a>
+        </div>
+        <p class="copyright">© 2025 College Store. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript for filtering -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all filter buttons and products
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            // Add click event to each filter button
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Get the category to filter by
+                    const filterCategory = this.getAttribute('data-category');
+                    
+                    // Filter products
+                    productCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        
+                        if (filterCategory === 'all' || filterCategory === cardCategory) {
+                            // Show products that match the filter
+                            card.classList.remove('hidden');
+                        } else {
+                            // Hide products that don't match
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Cart functionality
+            let cart = {
+                items: [],
+                totalCount: 0
+            };
+            function updateCartBadge() {
+            const cartBadge = document.getElementById('cart-badge');
+            
+            if (cartBadge) {
+                cartBadge.textContent = cart.totalCount;
+                
+                // Make the badge visible if there are items
+                if (cart.totalCount > 0) {
+                    cartBadge.style.display = 'flex';
+                } else {
+                    cartBadge.style.display = 'none';
+                }
+            }
+        }
+
+            // Load cart from localStorage if exists
+            const savedCart = localStorage.getItem('collegeStoreCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartBadge();
+            }
+
+            // Add to cart function
+            function addToCart(productName, priceText) {
+                try {
+                    // Parse price (remove $ sign and convert to number)
+                    const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+                    
+                    if (isNaN(price)) {
+                        console.error('Invalid price format:', priceText);
+                        return;
+                    }
+
+                    const existingItem = cart.items.find(item => item.name === productName);
+                    
+                    if (existingItem) {
+                        existingItem.quantity++;
+                    } else {
+                        cart.items.push({
+                            name: productName,
+                            price: price,  // Store as number
+                            quantity: 1
+                        });
+                    }
+                    
+                    cart.totalCount++;
+                    updateCartBadge();
+                    saveCart();
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                }
+            }
+
+            // Remove from cart function
+            function removeFromCart(productName) {
+                const itemIndex = cart.items.findIndex(item => item.name === productName);
+                
+                if (itemIndex !== -1) {
+                    if (cart.items[itemIndex].quantity > 1) {
+                        cart.items[itemIndex].quantity--;
+                    } else {
+                        cart.items.splice(itemIndex, 1);
+                    }
+                    cart.totalCount--;
+                    updateCartBadge();
+                    saveCart();
+                }
+            }
+
+            // Update cart badge
+            function updateCartBadge() {
+                const cartBadge = document.getElementById('cart-badge');
+                if (cartBadge) {
+                    cartBadge.textContent = cart.totalCount;
+                    cartBadge.style.display = cart.totalCount > 0 ? 'block' : 'none';
+                }
+            }
+
+            // Save cart to localStorage
+            function saveCart() {
+                try {
+                    localStorage.setItem('collegeStoreCart', JSON.stringify({
+                        items: cart.items,
+                        totalCount: cart.totalCount
+                    }));
+                } catch (error) {
+                    console.error('Error saving cart:', error);
+                }
+            }
+
+            // Initialize cart buttons
+            function initializeCartButtons() {
+                document.querySelectorAll('.add-to-cart').forEach(button => {
+                    // Remove any existing click handlers to prevent duplicates
+                    button.removeEventListener('click', handleAddToCart);
+                    // Add new click handler
+                    button.addEventListener('click', handleAddToCart);
+                });
+            }
+
+            function handleAddToCart() {
+                const productCard = this.closest('.product-card');
+                const productName = productCard.querySelector('h3').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+                addToCart(productName, price);
+                
+                // Visual feedback
+                this.textContent = 'Added!';
+                setTimeout(() => {
+                    this.textContent = 'Add to Cart';
+                }, 1000);
+            }
+
+            // Initialize buttons when page loads
+            initializeCartButtons();
+
+            // Also initialize when products are filtered
+            document.querySelectorAll('.filter-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    setTimeout(initializeCartButtons, 50);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

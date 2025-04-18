@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - College Store</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        h1, h2, h3 {
+            color: #003366;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        
+        .nav-tab {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid #ccc;
+        }
+        
+        .nav-tab.active {
+            background-color: #003366;
+            color: white;
+            border-color: #003366;
+        }
+        
+        .nav-tab i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .nav-tab span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .nav-tab::after {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background-color: #ccc;
+        }
+        
+        .nav-tab:last-child::after {
+            display: none;
+        }
+        
+        /* Checkout sections */
+        .checkout-section {
+            display: none;
+        }
+        
+        .checkout-section.active {
+            display: block;
+        }
+        
+        /* Checkout grid */
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tab {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .nav-tab::after {
+                right: -30px;
+                width: 20px;
+            }
+        }
+        
+        /* Cart summary */
+        .cart-summary {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 2fr 1fr 1fr;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-quantity {
+            text-align: center;
+        }
+        
+        .item-total {
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        .cart-total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        /* Form styles */
+        .checkout-form {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
+        
+        /* Payment options */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .payment-methods {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .payment-method {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method.active {
+            border-color: #003366;
+            background-color: #f0f7ff;
+        }
+        
+        .payment-method img {
+            height: 40px;
+            width: auto;
+            margin-bottom: 10px;
+        }
+        
+        .payment-form {
+            margin-top: 20px;
+        }
+        
+        /* Button styles */
+        .btn {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #00264d;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        /* Payment forms */
+        .payment-form {
+            display: none;
+        }
+        
+        .payment-form.active {
+            display: block;
+        }
+        
+        /* Order confirmation */
+        .order-confirmation {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .order-confirmation h2 {
+            color: #2e7d32;
+        }
+        
+        /* UPI Section */
+        .upi-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .upi-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .upi-option {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .upi-option.active {
+            border-color: #003366;
+            background-color: #f0f7ff;
+        }
+        
+        .upi-option img {
+            height: 40px;
+            width: auto;
+            margin-bottom: 5px;
+        }
+        
+        /* Logo and Header Styling */
+        .store-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .store-logo img {
+            height: 40px;
+            width: auto;
+        }
+        
+        .store-name {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="store-logo">
+                <img src="./images/logo.jpg" alt="College Store Logo">
+                <div class="store-name">College Store Checkout</div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-section="cart-section">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart</span>
+            </div>
+            <div class="nav-tab" data-section="shipping-section">
+                <i class="fas fa-truck"></i>
+                <span>Shipping</span>
+            </div>
+            <div class="nav-tab" data-section="payment-section">
+                <i class="fas fa-credit-card"></i>
+                <span>Payment</span>
+            </div>
+        </div>
+        
+        <!-- Cart Section -->
+        <div id="cart-section" class="checkout-section active">
+            <div class="cart-summary">
+                <h2>Your Cart</h2>
+                <div id="cart-items">
+                    <!-- Cart items will be populated dynamically -->
+                </div>
+                
+                <div class="cart-total">
+                    <div>Subtotal: ₹<span id="subtotal">0.00</span></div>
+                    <div>Shipping: ₹<span id="shipping">50.00</span></div>
+                    <div>Total: ₹<span id="total">0.00</span></div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <div></div> <!-- Empty div for alignment -->
+                    <button class="btn next-btn" data-next="shipping-section">Next: Shipping Details</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shipping Section -->
+        <div id="shipping-section" class="checkout-section">
+            <div class="checkout-form">
+                <h2>Shipping Information</h2>
+                <form id="shipping-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">PIN Code</label>
+                            <input type="text" id="zip" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn btn-secondary prev-btn" data-prev="cart-section">Back to Cart</button>
+                        <button type="button" class="btn next-btn" data-next="payment-section">Next: Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Payment Section -->
+        <div id="payment-section" class="checkout-section">
+            <div class="checkout-form">
+                <h2>Payment Method</h2>
+                
+                <!-- Payment Methods -->
+                <div class="payment-methods">
+                    <div class="payment-method" data-method="credit-card">
+                        <img src="/api/placeholder/50/30" alt="Credit Card">
+                        <div>Credit/Debit Card</div>
+                    </div>
+                    <div class="payment-method" data-method="upi">
+                        <img src="/api/placeholder/50/30" alt="UPI">
+                        <div>UPI</div>
+                    </div>
+                    <div class="payment-method" data-method="cod">
+                        <img src="/api/placeholder/50/30" alt="Cash on Delivery">
+                        <div>Cash on Delivery</div>
+                    </div>
+                    <div class="payment-method" data-method="net-banking">
+                        <img src="/api/placeholder/50/30" alt="Net Banking">
+                        <div>Net Banking</div>
+                    </div>
+                    <div class="payment-method" data-method="wallet">
+                        <img src="/api/placeholder/50/30" alt="Wallet">
+                        <div>Wallet</div>
+                    </div>
+                    <div class="payment-method" data-method="emi">
+                        <img src="/api/placeholder/50/30" alt="EMI">
+                        <div>EMI</div>
+                    </div>
+                </div>
+                
+                <!-- Credit Card Form -->
+                <div id="credit-card-form" class="payment-form">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="card-name">Name on Card</label>
+                            <input type="text" id="card-name" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-expiry">Expiration Date</label>
+                            <input type="text" id="card-expiry" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- UPI Form -->
+                <div id="upi-form" class="payment-form">
+                    <h3>Select UPI App</h3>
+                    <div class="upi-options">
+                        <div class="upi-option" data-upi="gpay">
+                            <img src="/api/placeholder/40/40" alt="Google Pay">
+                            <div>Google Pay</div>
+                        </div>
+                        <div class="upi-option" data-upi="phonepe">
+                            <img src="/api/placeholder/40/40" alt="PhonePe">
+                            <div>PhonePe</div>
+                        </div>
+                        <div class="upi-option" data-upi="paytm">
+                            <img src="/api/placeholder/40/40" alt="Paytm">
+                            <div>Paytm</div>
+                        </div>
+                        <div class="upi-option" data-upi="bhim">
+                            <img src="/api/placeholder/40/40" alt="BHIM">
+                            <div>BHIM</div>
+                        </div>
+                        <div class="upi-option" data-upi="other">
+                            <img src="/api/placeholder/40/40" alt="Other UPI">
+                            <div>Other UPI</div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="upi-id">UPI ID</label>
+                        <input type="text" id="upi-id" placeholder="yourname@bank" required>
+                    </div>
+                </div>
+                
+                <!-- COD Form -->
+                <div id="cod-form" class="payment-form">
+                    <div class="form-group">
+                        <p>Pay ₹<span id="cod-amount">0.00</span> at the time of delivery.</p>
+                        <p>Please note that Cash on Delivery may not be available for orders above ₹10,000.</p>
+                    </div>
+                </div>
+                
+                <!-- Net Banking Form -->
+                <div id="net-banking-form" class="payment-form">
+                    <div class="form-group">
+                        <label for="bank-select">Select Bank</label>
+                        <select id="bank-select" required>
+                            <option value="">-- Select Your Bank --</option>
+                            <option value="sbi">State Bank of India</option>
+                            <option value="hdfc">HDFC Bank</option>
+                            <option value="icici">ICICI Bank</option>
+                            <option value="axis">Axis Bank</option>
+                            <option value="pnb">Punjab National Bank</option>
+                            <option value="other">Other Bank</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Wallet Form -->
+                <div id="wallet-form" class="payment-form">
+                    <div class="form-group">
+                        <label for="wallet-select">Select Wallet</label>
+                        <select id="wallet-select" required>
+                            <option value="">-- Select Your Wallet --</option>
+                            <option value="paytm">Paytm</option>
+                            <option value="amazonpay">Amazon Pay</option>
+                            <option value="freecharge">Freecharge</option>
+                            <option value="mobikwik">MobiKwik</option>
+                            <option value="other">Other Wallet</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- EMI Form -->
+                <div id="emi-form" class="payment-form">
+                    <div class="form-group">
+                        <label for="emi-bank">Select Bank</label>
+                        <select id="emi-bank" required>
+                            <option value="">-- Select Your Bank --</option>
+                            <option value="hdfc">HDFC Bank</option>
+                            <option value="icici">ICICI Bank</option>
+                            <option value="axis">Axis Bank</option>
+                            <option value="sbi">State Bank of India</option>
+                            <option value="other">Other Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="emi-plan">Select EMI Plan</label>
+                        <select id="emi-plan" required>
+                            <option value="">-- Select EMI Plan --</option>
+                            <option value="3">3 Months</option>
+                            <option value="6">6 Months</option>
+                            <option value="9">9 Months</option>
+                            <option value="12">12 Months</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button type="button" class="btn btn-secondary prev-btn" data-prev="shipping-section">Back to Shipping</button>
+                    <button type="submit" class="btn" id="place-order-btn">Place Order</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Confirmation (hidden initially) -->
+        <div class="order-confirmation" id="order-confirmation">
+            <i class="fas fa-check-circle" style="font-size: 50px; color: #2e7d32; margin-bottom: 20px;"></i>
+            <h2>Thank You for Your Order!</h2>
+            <p>Your order has been placed successfully. An email confirmation has been sent to your email address.</p>
+            <p>Order #: <span id="order-number">12345</span></p>
+            <p>Estimated delivery: 3-5 business days</p>
+            <a href="index.html" class="btn">Continue Shopping</a>
+        </div>
+    </div>
+
+    <script>
+        // Cart and checkout functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('collegeStoreCart')) || { items: [], totalCount: 0 };
+            
+            // Display cart items
+            displayCartItems(cart);
+            
+            // Calculate and display totals
+            calculateTotals(cart);
+            
+            // Payment method selection
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    // Remove active class from all payment methods
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    
+                    // Add active class to selected method
+                    this.classList.add('active');
+                    
+                    // Hide all payment forms
+                    document.querySelectorAll('.payment-form').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    
+                    // Show selected payment form
+                    const methodName = this.getAttribute('data-method');
+                    document.getElementById(methodName + '-form').classList.add('active');
+                });
+            });
+            
+            // Select credit card by default
+            document.querySelector('[data-method="credit-card"]').click();
+            
+            // Form submission
+            document.getElementById('checkout-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // In a real application, you would validate the form here
+                // and process the payment with a payment gateway
+                
+                // For demo purposes, we'll just show the confirmation
+                document.querySelector('.checkout-grid').style.display = 'none';
+                
+                // Generate a random order number
+                document.getElementById('order-number').textContent = 'COL-' + Math.floor(100000 + Math.random() * 900000);
+                
+                // Show confirmation
+                document.getElementById('order-confirmation').style.display = 'block';
+                
+                // Clear cart
+                localStorage.removeItem('collegeStoreCart');
+            });
+        });
+        
+        // Function to display cart items
+        function displayCartItems(cart) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            
+            // If cart is empty
+            if (cart.items.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                return;
+            }
+            
+            // Display each cart item
+            cart.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                
+                itemElement.innerHTML = `
+                    
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-quantity">x${item.quantity}</div>
+                    <div class="item-total">₹${(item.price * item.quantity).toFixed(2)}</div>
+                `;
+                
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
+        
+        // Function to calculate and display totals
+        function calculateTotals(cart) {
+            let subtotal = 0;
+            const shippingCost = 20.00; // Fixed shipping cost
+            
+            // Calculate subtotal
+            cart.items.forEach(item => {
+                subtotal += item.price * item.quantity;
+            });
+            
+            // Update display
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('shipping').textContent = shippingCost.toFixed(2);
+            document.getElementById('total').textContent = (subtotal + shippingCost).toFixed(2);
+        }
+    </script>
+</body>
+</html>

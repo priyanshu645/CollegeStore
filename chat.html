@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Store - Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+            height: 100vh;
+        }
+
+        .chat-container {
+            display: flex;
+            height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            background-color: #fff;
+        }
+
+        .contacts-list {
+            width: 30%;
+            background-color: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contacts-header {
+            padding: 15px;
+            background-color: #6c5ce7;
+            color: white;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .search-box {
+            padding: 10px;
+            background-color: #f1f1f1;
+            position: sticky;
+            top: 60px;
+            z-index: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        .contact {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact:hover {
+            background-color: #e9ecef;
+        }
+
+        .contact.active {
+            background-color: #e3f2fd;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #6c5ce7;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .contact-info {
+            flex-grow: 1;
+        }
+
+        .contact-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .contact-preview {
+            font-size: 12px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .contact-meta {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .contact-time {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .contact-badge {
+            background-color: #6c5ce7;
+            color: white;
+            border-radius: 50%;
+            padding: 0 7px;
+            display: inline-block;
+        }
+
+        .chat-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 15px;
+            background-color: #6c5ce7;
+            color: white;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .back-btn {
+            display: none;
+            margin-right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: #6c5ce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .chat-header-text {
+            flex-grow: 1;
+        }
+
+        .chat-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .chat-status {
+            font-size: 12px;
+        }
+
+        .chat-body {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-image: url('https://i.pinimg.com/originals/97/c0/07/97c00759d90d786d9b6a5348c347f24c.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        .message.received {
+            justify-content: flex-start;
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 65%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .message.received .message-content {
+            background-color: white;
+            border-top-left-radius: 0;
+        }
+
+        .message.sent .message-content {
+            background-color: #e3f2fd;
+            border-top-right-radius: 0;
+            background-color: #6c5ce7;
+            color: white;
+        }
+
+        .message-text {
+            margin-bottom: 5px;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: #888;
+            text-align: right;
+        }
+
+        .message.sent .message-time {
+            color: #d1d1ff;
+        }
+
+        .message-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+        .chat-footer {
+            padding: 15px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .chat-footer button {
+            background: none;
+            border: none;
+            color: #6c5ce7;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .chat-footer input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        .send-btn {
+            background-color: #6c5ce7 !important;
+            color: white !important;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .product-price {
+            color: #6c5ce7;
+            font-weight: bold;
+        }
+
+        .product-description {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        #addBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 9999;
+        }
+        @media (max-width: 768px) {
+            .chat-container {
+                flex-direction: column;
+            }
+
+            .contacts-list {
+                width: 100%;
+                height: 100%;
+            }
+
+            .chat-area {
+                display: none;
+            }
+
+            .show-chat .contacts-list {
+                display: none;
+            }
+
+            .show-chat .chat-area {
+                display: flex;
+            }
+
+            .back-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container" id="chatContainer">
+        <div class="contacts-list">
+            <div class="contacts-header">
+                <h2>Messages</h2>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="contact active" data-name="Amit Kumar" onclick="openChat(this)">
+                <div class="contact-avatar">AM</div>
+                <div class="contact-info">
+                    <div class="contact-name">Amit Kumar</div>
+                    <div class="contact-preview">Do you still have that Physics book?</div>
+                </div>
+                <div class="contact-meta">
+                    <div class="contact-time">12:30 PM</div>
+                    <div class="contact-badge">2</div>
+                </div>
+            </div>
+            <div class="contact" data-name="Rohit Kumar" onclick="openChat(this)">
+                <div class="contact-avatar">RK</div>
+                <div class="contact-info">
+                    <div class="contact-name">Rohit Kumar</div>
+                    <div class="contact-preview">I'm interested in buying your laptop</div>
+                </div>
+                <div class="contact-meta">
+                    <div class="contact-time">Yesterday</div>
+                </div>
+            </div>
+            <div class="contact" data-name="Akshay Raj" onclick="openChat(this)">
+                <div class="contact-avatar">AR</div>
+                <div class="contact-info">
+                    <div class="contact-name">Akshay Raj</div>
+                    <div class="contact-preview">Thanks for the stationery items!</div>
+                </div>
+                <div class="contact-meta">
+                    <div class="contact-time">Wed</div>
+                </div>
+            </div>
+            <div class="contact" data-name="Sanya Patel" onclick="openChat(this)">
+                <div class="contact-avatar">SP</div>
+                <div class="contact-info">
+                    <div class="contact-name">Sanya Patel</div>
+                    <div class="contact-preview">Is the calculator still available?</div>
+                </div>
+                <div class="contact-meta">
+                    <div class="contact-time">Mon</div>
+                </div>
+            </div>
+            <div class="contact" data-name="Neha Mishra" onclick="openChat(this)">
+                <div class="contact-avatar">NM</div>
+                <div class="contact-info">
+                    <div class="contact-name">Neha Mishra</div>
+                    <div class="contact-preview">I can meet tomorrow to exchange the books</div>
+                </div>
+                <div class="contact-meta">
+                    <div class="contact-time">Sun</div>
+                </div>
+            </div>
+            <div class="contact" data-name="Vikram Gupta" onclick="openChat(this)">
+                <div class="contact-avatar">VG</div>
+                <div class="contact-info">
+                    <div class="contact-name">Vikram Gupta</div>
+                    <div class="contact-preview">Do you accept UPI payment?</div>
+                </div>
+                <div class="contact-meta">
+                    <div class="contact-time">14/04</div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-area">
+            <div class="chat-header">
+                <button class="back-btn" onclick="showContacts()">←</button>
+                <div class="chat-header-info">
+                    <div class="chat-header-avatar">AM</div>
+                    <div class="chat-header-text">
+                        <div class="chat-name">Amit Kumar</div>
+                        <div class="chat-status">Online</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-body">
+                <div class="message received">
+                    <div class="message-content">
+                        <div class="message-text">Hello! I saw your post about books for sale.</div>
+                        <div class="message-time">11:45 AM</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-text">Hi Amit! Yes, I have several textbooks available. What are you looking
+                            for?</div>
+                        <div class="message-time">11:48 AM</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <div class="message-text">I need a Physics textbook for first year engineering. Do you have
+                            "Concepts of Physics by H.C. Verma"?</div>
+                        <div class="message-time">11:50 AM</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-text">Yes, I do! Here's the book:</div>
+                        <div class="product-card">
+                            <img class="product-image" src="/api/placeholder/60/60" alt="Physics Book">
+                            <div class="product-details">
+                                <div class="product-title">H.C. Verma Physics Vol 1</div>
+                                <div class="product-description">Excellent condition, no markings</div>
+                                <div class="product-price">₹250</div>
+                            </div>
+                        </div>
+                        <div class="message-time">11:55 AM</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <div class="message-text">Perfect! That's exactly what I need. Is it the latest edition?</div>
+                        <div class="message-time">12:02 PM</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-text">Yes, it's the latest edition. I bought it last semester.</div>
+                        <img class="message-image" src="/api/placeholder/200/150" alt="Book details">
+                        <div class="message-time">12:10 PM</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <div class="message-text">Great! Can we meet tomorrow at the college library? I can pay in cash.
+                        </div>
+                        <div class="message-time">12:15 PM</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-text">Sure, I'm free tomorrow from 2-4 PM. The library works for me.</div>
+                        <div class="message-time">12:20 PM</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <div class="message-text">Perfect! Let's meet at 3 PM then. By the way, do you still have that
+                            Calculator you mentioned in your other post?</div>
+                        <div class="message-time">12:25 PM</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <div class="message-text">Do you still have that Physics book?</div>
+                        <div class="message-time">12:30 PM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <button><i>📎</i></button>
+                <input type="text" placeholder="Type a message...">
+                <button><i>😊</i></button>
+                <button class="send-btn"><i>➤</i></button>
+            </div>
+        </div>
+
+    </div>
+    <!-- Floating Add Contact Button -->
+    <button onclick="addNewContact()" id="addBtn" title="Add Contact">＋</button>
+
+    <script>
+        const chatHeader = document.querySelector('.chat-header-text');
+        const chatAvatar = document.querySelector('.chat-header-avatar');
+        const chatBody = document.querySelector('.chat-body');
+        const chatInput = document.querySelector('.chat-footer input');
+        const sendBtn = document.querySelector('.send-btn');
+
+        // Track current active chat
+        let currentUser = 'Amit Kumar';
+
+        const messages = {
+            'Amit Kumar': [
+                { from: 'received', text: 'Hello! I saw your post about books for sale.', time: '11:45 AM' },
+                { from: 'sent', text: 'Hi Amit! Yes, I have several textbooks available. What are you looking for?', time: '11:48 AM' },
+                { from: 'received', text: 'I need a Physics textbook for first year engineering. Do you have "Concepts of Physics by H.C. Verma"?', time: '11:50 AM' },
+                { from: 'sent', text: 'Yes, I do! Here\'s the book:', time: '11:55 AM'/*, isProduct: true*/ },
+                { from: 'received', text: "Perfect! That's exactly what I need. Is it the latest edition?", time: '12:02 PM' },
+                { from: 'sent', text: "Yes, it's the latest edition. I bought it last semester.", /*image: '/api/placeholder/200/150'*/ time: '12:10 PM' },
+                { from: 'received', text: "Great! Can we meet tomorrow at the college library? I can pay in cash.", time: '12:15 PM' },
+                { from: 'sent', text: "Sure, I'm free tomorrow from 2-4 PM. The library works for me.", time: '12:20 PM' },
+                { from: 'received', text: "Perfect! Let's meet at 3 PM then. By the way, do you still have that Calculator you mentioned in your other post?", time: '12:25 PM' },
+                { from: 'received', text: "Do you still have that Physics book?", time: '12:30 PM' },
+            ],
+            'Rohit Kumar': [
+                { from: 'received', text: "Hi, I'm interested in buying your laptop.", time: 'Yesterday' }
+            ],
+            'Akshay Raj': [
+                { from: 'received', text: "Thanks for the stationery items!", time: 'Wednesday' }
+            ],
+            'Sanya Patel': [
+                { from: 'received', text: "Is the calculator still available?", time: 'Monday' }
+            ],
+            'Neha Mishra': [
+                { from: 'received', text: "Let's exchange books tomorrow.", time: 'Sunday' }
+            ],
+            'Vikram Gupta': [
+                { from: 'received', text: "Do you accept UPI payment?", time: '14/04' }
+            ],
+        };
+
+        function formatMessageHTML(msg) {
+            return `
+        <div class="message ${msg.from}">
+            <div class="message-content">
+                <div class="message-text">${msg.text || ''}</div>
+                ${msg.isProduct ? `
+                    <div class="product-card">
+                        <img class="product-image" src="/api/placeholder/60/60" alt="Physics Book">
+                        <div class="product-details">
+                            <div class="product-title">H.C. Verma Physics Vol 1</div>
+                            <div class="product-description">Excellent condition, no markings</div>
+                            <div class="product-price">₹250</div>
+                        </div>
+                    </div>
+                ` : ''}
+                ${msg.image ? `<img class="message-image" src="${msg.image}" alt="Attachment">` : ''}
+                <div class="message-time">${msg.time}</div>
+            </div>
+        </div>`;
+        }
+
+        function renderMessages(user) {
+            chatBody.innerHTML = messages[user]?.map(formatMessageHTML).join('') || '';
+        }
+
+        function openChat(contactElement) {
+            const name = contactElement.dataset.name;
+            const initials = name.match(/\b\w/g).join('').substring(0, 2).toUpperCase();
+
+            currentUser = name;
+            chatHeader.querySelector('.chat-name').textContent = name;
+            chatAvatar.textContent = initials;
+
+            renderMessages(name);
+
+            document.querySelectorAll('.contact').forEach(c => c.classList.remove('active'));
+            contactElement.classList.add('active');
+            document.getElementById('chatContainer').classList.add('show-chat');
+        }
+
+        function showContacts() {
+            document.getElementById('chatContainer').classList.remove('show-chat');
+        }
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            const now = new Date();
+            const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const message = {
+                from: 'sent',
+                text,
+                time
+            };
+
+            messages[currentUser] = messages[currentUser] || [];
+            messages[currentUser].push(message);
+
+            renderMessages(currentUser);
+            chatInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function addNewContact() {
+            const name = prompt("Enter name of new contact:");
+            if (!name) return;
+            const initials = name.match(/\b\w/g).join('').substring(0, 2).toUpperCase();
+
+            const contactList = document.querySelector('.contacts-list');
+            const contactDiv = document.createElement('div');
+            contactDiv.classList.add('contact');
+            contactDiv.dataset.name = name;
+            contactDiv.setAttribute('onclick', 'openChat(this)');
+            contactDiv.innerHTML = `
+            <div class="contact-avatar">${initials}</div>
+            <div class="contact-info">
+                <div class="contact-name">${name}</div>
+                <div class="contact-preview">No messages yet</div>
+            </div>
+            <div class="contact-meta"><div class="contact-time">Now</div></div>
+        `;
+            contactList.appendChild(contactDiv);
+
+            messages[name] = [];
+        }
+
+        // Initialize Amit Kumar chat
+        renderMessages(currentUser);
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            document.querySelectorAll('.contact').forEach(contact => {
+                const name = contact.querySelector('.contact-name').textContent.toLowerCase();
+                contact.style.display = name.includes(term) ? 'flex' : 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

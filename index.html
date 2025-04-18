@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="mobo.css">
     <script defer src="script.js"></script>
 </head>
+
 <body>
 
     <!-- Navigation Bar -->
@@ -16,10 +18,10 @@
         <div class="mobile-menu-icon" onclick="toggleMenu()">&#9776;</div>
         <nav class="nav" id="nav-menu">
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="buy-section.html">Buy</a></li>
+                <li><a href="buy.html">Buy</a></li>
                 <li><a href="sell-section.html">Sell</a></li>
-                <li><a href="#">Donate</a></li>
+                <li><a href="chat.html">Chats</a></li>
+                <li><a href="donate.html">Donate</a></li>
                 <li><a href="login.html">Login</a></li>
             </ul>
         </nav>
@@ -40,27 +42,27 @@
             <div class="item">
                 <img src="Engg.Math.jpeg" alt="Book">
                 <p>Engineering Mathematics - ₹350</p>
-                <button class="buy-btn">Buy Now</button>
+                <a href="buy.html" class="btn">View Now</a>
             </div>
             <div class="item">
                 <img src="DellLaptop.jpeg" alt="Laptop">
                 <p>Dell Laptop - ₹25,000</p>
-                <button class="buy-btn">Buy Now</button>
+                <a href="buy.html" class="btn">View Now</a>
             </div>
             <div class="item">
-                <img src="calculator.jpeg" alt="Calculator">
+                <img src="./images/991ms.jpeg" alt="Calculator">
                 <p>Scientific Calculator - ₹500</p>
-                <button class="buy-btn">Buy Now</button>
+                <a href="buy.html" class="btn">View Now</a>
             </div>
             <div class="item">
                 <img src="apron.jpg" alt="Apron">
                 <p>Apron - ₹40</p>
-                <button class="buy-btn">Buy Now</button>
+                <a href="buy.html" class="btn">View Now</a>
             </div>
             <div class="item">
                 <img src="edKit.jpg" alt="Ed Kit">
-                <p>T-Scale - ₹45</p>
-                <button class="buy-btn">Buy Now</button>
+                <p>T-Scale - ₹35</p>
+                <a href="buy.html" class="btn">View Now</a>
             </div>
         </div>
     </section>
@@ -72,7 +74,7 @@
             <p>Find the best deals from students near you.</p>
             <!--<button class="buy-btn"><a href="buy-section.html">Browse Listings</a></button>
             <button>Browse Listings</button>-->
-            <a href="buy-section.html" class="btn">Browse Listings</a>
+            <a href="buy.html" class="btn">Browse Listings</a>
         </div>
         <div class="box sell">
             <h3>Want to Sell?</h3>
@@ -82,7 +84,7 @@
         <div class="box donate">
             <h3>Donate & Help</h3>
             <p>Support students by donating your unused materials.</p>
-            <a href="#" class="btn">Donate Now</a>
+            <a href="donate.html" class="btn">Donate Now</a>
         </div>
     </section>
 
@@ -93,14 +95,15 @@
     <script>
         // Toggle mobile menu display
         function toggleMenu() {
-          var menu = document.getElementById('nav-menu');
-          if (menu.style.display === 'block') {
-            menu.style.display = 'none';
-          } else {
-            menu.style.display = 'block';
-          }
+            var menu = document.getElementById('nav-menu');
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'block';
+            }
         }
-      </script>
+    </script>
 
 </body>
+
 </html>
