@@ -14,12 +14,15 @@
 
     <!-- Navigation Bar -->
     <header>
-        <h1>CollegeStore</h1>
+        <div class="store-logo">
+            <img src="./images/logo.png" alt="College Store Logo">
+            <div class="store-name">College Store</div>
+        </div>
         <div class="mobile-menu-icon" onclick="toggleMenu()">&#9776;</div>
         <nav class="nav" id="nav-menu">
             <ul>
                 <li><a href="buy.html">Buy</a></li>
-                <li><a href="sell-section.html">Sell</a></li>
+                <li><a href="sell.html">Sell</a></li>
                 <li><a href="chat.html">Chats</a></li>
                 <li><a href="donate.html">Donate</a></li>
                 <li><a href="login.html">Login</a></li>
@@ -28,11 +31,11 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" style="background-color:beige;">
+    <section class="hero" style="background-image: url(https://www.niu.edu/images/randomizer/davis-hall-patio.jpg);">
         <h2>Buy, Sell & Donate Student Materials</h2>
         <p>Find the best deals on books, gadgets, and more. Support your campus community.</p>
-        <input type="text" placeholder="Search for books, gadgets, etc..." id="search-bar">
-        <button onclick="searchItems()">Search</button>
+       <!-- <input type="text" placeholder="Search for books, gadgets, etc..." id="search-bar">
+        <button onclick="searchItems()">Search</button>-->
     </section>
 
     <!-- Featured Listings -->
@@ -79,7 +82,7 @@
         <div class="box sell">
             <h3>Want to Sell?</h3>
             <p>Post your used books, gadgets, and accessories easily.</p>
-            <a href="sell-section.html" class="btn">Sell Now</a>
+            <a href="sell.html" class="btn">Sell Now</a>
         </div>
         <div class="box donate">
             <h3>Donate & Help</h3>
@@ -92,7 +95,7 @@
     <footer>
         <p>&copy; 2025 CollegeStore | Made for Students</p>
     </footer>
-    <script>
+    <script src="cart.js">
         // Toggle mobile menu display
         function toggleMenu() {
             var menu = document.getElementById('nav-menu');

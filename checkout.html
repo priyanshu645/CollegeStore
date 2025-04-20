@@ -355,6 +355,21 @@
             font-size: 22px;
             font-weight: bold;
         }
+        /* Spinner */
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #003366;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
     </style>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -363,7 +378,7 @@
     <header>
         <div class="container">
             <div class="store-logo">
-                <img src="./images/logo.jpg" alt="College Store Logo">
+                <img src="./images/logo.png" alt="College Store Logo">
                 <div class="store-name">College Store Checkout</div>
             </div>
         </div>
@@ -457,33 +472,33 @@
         
         <!-- Payment Section -->
         <div id="payment-section" class="checkout-section">
-            <div class="checkout-form">
+            <form id="checkout-form" class="checkout-form">
                 <h2>Payment Method</h2>
                 
                 <!-- Payment Methods -->
                 <div class="payment-methods">
                     <div class="payment-method" data-method="credit-card">
-                        <img src="/api/placeholder/50/30" alt="Credit Card">
+                        <img src="https://w7.pngwing.com/pngs/123/955/png-transparent-india-rupay-debit-card-bank-credit-card-india-text-trademark-logo.png" alt="Credit Card">
                         <div>Credit/Debit Card</div>
                     </div>
                     <div class="payment-method" data-method="upi">
-                        <img src="/api/placeholder/50/30" alt="UPI">
+                        <img src="https://indiashippingnews.com/wp-content/uploads/2024/08/UPI.jpg" alt="UPI">
                         <div>UPI</div>
                     </div>
                     <div class="payment-method" data-method="cod">
-                        <img src="/api/placeholder/50/30" alt="Cash on Delivery">
+                        <img src="https://static.vecteezy.com/system/resources/previews/003/020/747/large_2x/cash-on-delivery-badge-ilustration-free-vector.jpg" alt="Cash on Delivery">
                         <div>Cash on Delivery</div>
                     </div>
                     <div class="payment-method" data-method="net-banking">
-                        <img src="/api/placeholder/50/30" alt="Net Banking">
+                        <img src="https://cdn4.vectorstock.com/i/1000x1000/50/63/internet-banking-payment-in-euro-icon-vector-19195063.jpg" alt="Net Banking">
                         <div>Net Banking</div>
                     </div>
                     <div class="payment-method" data-method="wallet">
-                        <img src="/api/placeholder/50/30" alt="Wallet">
+                        <img src="https://img.freepik.com/premium-vector/wallet-logo-with-simple-concept_11481-921.jpg" alt="Wallet">
                         <div>Wallet</div>
                     </div>
                     <div class="payment-method" data-method="emi">
-                        <img src="/api/placeholder/50/30" alt="EMI">
+                        <img src="https://static.vecteezy.com/system/resources/previews/020/397/519/large_2x/emi-letter-logo-design-on-white-background-emi-creative-circle-letter-logo-concept-emi-letter-design-vector.jpg" alt="EMI">
                         <div>EMI</div>
                     </div>
                 </div>
@@ -515,23 +530,23 @@
                     <h3>Select UPI App</h3>
                     <div class="upi-options">
                         <div class="upi-option" data-upi="gpay">
-                            <img src="/api/placeholder/40/40" alt="Google Pay">
+                            <img src="https://w7.pngwing.com/pngs/667/120/png-transparent-google-pay-2020-hd-logo.png" alt="Google Pay">
                             <div>Google Pay</div>
                         </div>
                         <div class="upi-option" data-upi="phonepe">
-                            <img src="/api/placeholder/40/40" alt="PhonePe">
+                            <img src="https://www.pngitem.com/pimgs/m/3-38170_phonepe-logo-png-phone-pe-transparent-png.png" alt="PhonePe">
                             <div>PhonePe</div>
                         </div>
                         <div class="upi-option" data-upi="paytm">
-                            <img src="/api/placeholder/40/40" alt="Paytm">
+                            <img src="https://cdn-1.webcatalog.io/catalog/paytm/paytm-icon.png" alt="Paytm">
                             <div>Paytm</div>
                         </div>
                         <div class="upi-option" data-upi="bhim">
-                            <img src="/api/placeholder/40/40" alt="BHIM">
+                            <img src="https://cdn.iconscout.com/icon/free/png-256/bhim-3-69845.png" alt="BHIM">
                             <div>BHIM</div>
                         </div>
                         <div class="upi-option" data-upi="other">
-                            <img src="/api/placeholder/40/40" alt="Other UPI">
+                            <img src="https://s3b.cashify.in/gpro/uploads/2021/12/27211318/Show-UPI-in-center-with-various-banks-logo.jpg" alt="Other UPI">
                             <div>Other UPI</div>
                         </div>
                     </div>
@@ -609,7 +624,7 @@
                     <button type="button" class="btn btn-secondary prev-btn" data-prev="shipping-section">Back to Shipping</button>
                     <button type="submit" class="btn" id="place-order-btn">Place Order</button>
                 </div>
-            </div>
+            </form>
         </div>
         
         <!-- Order Confirmation (hidden initially) -->
@@ -660,24 +675,33 @@
             document.querySelector('[data-method="credit-card"]').click();
             
             // Form submission
-            document.getElementById('checkout-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // In a real application, you would validate the form here
-                // and process the payment with a payment gateway
-                
-                // For demo purposes, we'll just show the confirmation
-                document.querySelector('.checkout-grid').style.display = 'none';
-                
-                // Generate a random order number
-                document.getElementById('order-number').textContent = 'COL-' + Math.floor(100000 + Math.random() * 900000);
-                
-                // Show confirmation
-                document.getElementById('order-confirmation').style.display = 'block';
-                
-                // Clear cart
-                localStorage.removeItem('collegeStoreCart');
-            });
+           
+    // Place order logic
+    document.addEventListener('DOMContentLoaded', function () {
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (!checkoutForm.checkValidity()) {
+                checkoutForm.reportValidity();
+                return;
+            }
+
+            const popup = document.getElementById('order-success-popup');
+            if (popup) {
+                popup.style.display = 'flex';
+            }
+
+            localStorage.removeItem('collegeStoreCart');
+
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 2500);
+        });
+    }
+});
+
         });
         
         // Function to display cart items
@@ -722,6 +746,65 @@
             document.getElementById('shipping').textContent = shippingCost.toFixed(2);
             document.getElementById('total').textContent = (subtotal + shippingCost).toFixed(2);
         }
+        // Handle next and previous button navigation
+document.querySelectorAll('.next-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const nextSectionId = this.getAttribute('data-next');
+        navigateToSection(nextSectionId);
+    });
+});
+
+document.querySelectorAll('.prev-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const prevSectionId = this.getAttribute('data-prev');
+        navigateToSection(prevSectionId);
+    });
+});
+
+function navigateToSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.checkout-section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Show the selected section
+    document.getElementById(sectionId).classList.add('active');
+
+    // Update navigation tabs
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-section') === sectionId) {
+            tab.classList.add('active');
+        }
+    });
+}
+
     </script>
+    <!-- Order Success Popup -->
+<div id="order-success-popup" style="
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.5);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 9999;
+">
+<div style="
+    background: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+">
+    <div class="loader" style="margin-bottom: 20px;"></div>
+    <h2 style="margin-bottom: 10px;">Order Placed Successfully!</h2>
+    <p>You’ll be redirected shortly...</p>
+</div>
+</div>
+
 </body>
 </html>

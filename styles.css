@@ -454,3 +454,19 @@ footer {
         flex-wrap: wrap;
       }
     }
+    .store-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .store-logo img {
+        height: 40px;
+        width: auto;
+    }
+    
+    .store-name {
+        font-size: 22px;
+        font-weight: bold;
+    }
