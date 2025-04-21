@@ -280,6 +280,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Also initialize when products are filtered
     document.querySelectorAll('.filter-button').forEach(button => {
         button.addEventListener('click', function() {
+            // Get the category to filter by
+            const filterCategory = this.getAttribute('data-category');
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.filter-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Filter products
+            document.querySelectorAll('.product-card').forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                
+                if (filterCategory === 'all' || filterCategory === cardCategory) {
+                    // Show products that match the filter
+                    card.style.display = 'flex';
+                } else {
+                    // Hide products that don't match
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update product availability and cart buttons after filtering
             setTimeout(() => {
                 updateProductAvailability();
                 initializeCartButtons();
