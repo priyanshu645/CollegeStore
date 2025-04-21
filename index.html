@@ -25,7 +25,7 @@
                 <li><a href="sell.html">Sell</a></li>
                 <li><a href="chat.html">Chats</a></li>
                 <li><a href="donate.html">Donate</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="login.html" id="login-logout-link">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -95,7 +95,8 @@
     <footer>
         <p>&copy; 2025 CollegeStore | Made for Students</p>
     </footer>
-    <script src="cart.js">
+    <script src="cart.js"></script>
+    <script>
         // Toggle mobile menu display
         function toggleMenu() {
             var menu = document.getElementById('nav-menu');
@@ -105,6 +106,29 @@
                 menu.style.display = 'block';
             }
         }
+
+        // Check if user is logged in and update login/logout button
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginLogoutLink = document.getElementById('login-logout-link');
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (currentUser) {
+                // User is logged in, change link to logout
+                loginLogoutLink.textContent = 'Logout';
+                loginLogoutLink.href = '#';
+                loginLogoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Clear user data from localStorage
+                    localStorage.removeItem('currentUser');
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                });
+            } else {
+                // User is not logged in, ensure link points to login page
+                loginLogoutLink.textContent = 'Login';
+                loginLogoutLink.href = 'login.html';
+            }
+        });
     </script>
 
 </body>

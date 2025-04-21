@@ -259,6 +259,64 @@
             transition: background-color 0.3s;
         }
         
+        /* Remove button styles */
+        .remove-item-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .remove-item-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Quantity control styles */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        
+        .quantity-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .quantity-value {
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        
+        /* Required field indicator */
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .required-note {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
         .btn:hover {
             background-color: #00264d;
         }
@@ -426,38 +484,39 @@
         <div id="shipping-section" class="checkout-section">
             <div class="checkout-form">
                 <h2>Shipping Information</h2>
+                <p class="required-note">All fields are required</p>
                 <form id="shipping-form">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="first-name">First Name</label>
+                            <label for="first-name" class="required-field">First Name</label>
                             <input type="text" id="first-name" required>
                         </div>
                         <div class="form-group">
-                            <label for="last-name">Last Name</label>
+                            <label for="last-name" class="required-field">Last Name</label>
                             <input type="text" id="last-name" required>
                         </div>
                         <div class="form-group full-width">
-                            <label for="email">Email Address</label>
+                            <label for="email" class="required-field">Email Address</label>
                             <input type="email" id="email" required>
                         </div>
                         <div class="form-group full-width">
-                            <label for="address">Street Address</label>
+                            <label for="address" class="required-field">Street Address</label>
                             <input type="text" id="address" required>
                         </div>
                         <div class="form-group">
-                            <label for="city">City</label>
+                            <label for="city" class="required-field">City</label>
                             <input type="text" id="city" required>
                         </div>
                         <div class="form-group">
-                            <label for="state">State</label>
+                            <label for="state" class="required-field">State</label>
                             <input type="text" id="state" required>
                         </div>
                         <div class="form-group">
-                            <label for="zip">PIN Code</label>
+                            <label for="zip" class="required-field">PIN Code</label>
                             <input type="text" id="zip" required>
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone Number</label>
+                            <label for="phone" class="required-field">Phone Number</label>
                             <input type="tel" id="phone" required>
                         </div>
                     </div>
@@ -678,29 +737,32 @@
            
     // Place order logic
     document.addEventListener('DOMContentLoaded', function () {
-    const checkoutForm = document.getElementById('checkout-form');
-    if (checkoutForm) {
-        checkoutForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        const checkoutForm = document.getElementById('checkout-form');
+        if (checkoutForm) {
+            checkoutForm.addEventListener('submit', function (e) {
+                e.preventDefault();
 
-            if (!checkoutForm.checkValidity()) {
-                checkoutForm.reportValidity();
-                return;
-            }
+                if (!checkoutForm.checkValidity()) {
+                    checkoutForm.reportValidity();
+                    return;
+                }
 
-            const popup = document.getElementById('order-success-popup');
-            if (popup) {
-                popup.style.display = 'flex';
-            }
+                // Show order confirmation popup
+                const popup = document.getElementById('order-success-popup');
+                if (popup) {
+                    popup.style.display = 'flex';
+                }
 
-            localStorage.removeItem('collegeStoreCart');
+                // Clear cart from localStorage
+                localStorage.removeItem('collegeStoreCart');
 
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 2500);
-        });
-    }
-});
+                // Redirect to index.html after a short delay
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 2500);
+            });
+        }
+    });
 
         });
         
@@ -723,12 +785,95 @@
                 itemElement.innerHTML = `
                     
                     <div class="item-name">${item.name}</div>
-                    <div class="item-quantity">x${item.quantity}</div>
+                    <div class="item-quantity">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn decrease-btn" onclick="updateItemQuantity('${item.name}', -1)">-</button>
+                            <span class="quantity-value">${item.quantity}</span>
+                            <button class="quantity-btn increase-btn" onclick="updateItemQuantity('${item.name}', 1)" ${item.quantity >= 1 ? 'disabled' : ''}>+</button>
+                            <button class="remove-item-btn" onclick="removeItemCompletely('${item.name}')">Remove</button>
+                        </div>
+                    </div>
                     <div class="item-total">₹${(item.price * item.quantity).toFixed(2)}</div>
                 `;
                 
                 cartItemsContainer.appendChild(itemElement);
             });
+        }
+        
+        // Function to update item quantity
+        function updateItemQuantity(itemName, change) {
+            // Get cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('collegeStoreCart')) || { items: [], totalCount: 0 };
+            
+            // Get product inventory
+            let productInventory = JSON.parse(localStorage.getItem('productInventory')) || {};
+            
+            // Find the item
+            const itemIndex = cart.items.findIndex(item => item.name === itemName);
+            
+            if (itemIndex !== -1) {
+                // Update quantity
+                const newQuantity = cart.items[itemIndex].quantity + change;
+                
+                // Check if we're trying to increase beyond inventory limit (which is 1)
+                if (change > 0 && newQuantity > 1) {
+                    alert('You can only have 1 of each item in your cart.');
+                    return;
+                }
+                
+                // Allow quantity to go to 0, which will remove the item
+                if (newQuantity <= 0) {
+                    removeItemCompletely(itemName);
+                    return;
+                }
+                
+                // Update item quantity
+                cart.items[itemIndex].quantity = newQuantity;
+                
+                // Update total count
+                cart.totalCount += change;
+                
+                // Save updated cart to localStorage
+                localStorage.setItem('collegeStoreCart', JSON.stringify(cart));
+                
+                // Refresh the display
+                displayCartItems(cart);
+                calculateTotals(cart);
+            }
+        }
+        
+        // Function to completely remove an item from the cart
+        function removeItemCompletely(itemName) {
+            // Get cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('collegeStoreCart')) || { items: [], totalCount: 0 };
+            
+            // Get product inventory
+            let productInventory = JSON.parse(localStorage.getItem('productInventory')) || {};
+            
+            // Find the item
+            const itemIndex = cart.items.findIndex(item => item.name === itemName);
+            
+            if (itemIndex !== -1) {
+                // Get the quantity of the item being removed
+                const removedQuantity = cart.items[itemIndex].quantity;
+                
+                // Increase inventory
+                if (productInventory[itemName] !== undefined) {
+                    productInventory[itemName] += removedQuantity;
+                    localStorage.setItem('productInventory', JSON.stringify(productInventory));
+                }
+                
+                // Remove the item from the cart
+                cart.totalCount -= removedQuantity;
+                cart.items.splice(itemIndex, 1);
+                
+                // Save updated cart to localStorage
+                localStorage.setItem('collegeStoreCart', JSON.stringify(cart));
+                
+                // Refresh the display
+                displayCartItems(cart);
+                calculateTotals(cart);
+            }
         }
         
         // Function to calculate and display totals
@@ -745,6 +890,12 @@
             document.getElementById('subtotal').textContent = subtotal.toFixed(2);
             document.getElementById('shipping').textContent = shippingCost.toFixed(2);
             document.getElementById('total').textContent = (subtotal + shippingCost).toFixed(2);
+            
+            // Update COD amount if element exists
+            const codAmount = document.getElementById('cod-amount');
+            if (codAmount) {
+                codAmount.textContent = (subtotal + shippingCost).toFixed(2);
+            }
         }
         // Handle next and previous button navigation
 document.querySelectorAll('.next-btn').forEach(button => {

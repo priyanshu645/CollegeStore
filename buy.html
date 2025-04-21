@@ -20,9 +20,13 @@
                 <span class="cart-badge" id="cart-badge" style="color: beige;">0</span>
             </a>            
         </div>
+        <div class="search-container">
+            <input type="text" id="product-search" placeholder="Search products..." class="search-input">
+            <button class="search-button"><i class="fas fa-search"></i>Search</button>
+        </div>
     </div>
 
-    <!-- Header -->
+    <!-- Header 
     <header>
         <div class="hero" style="background-image: url(https://thumbs.dreamstime.com/b/shopping-college-essentials-graduation-cap-store-aisle-shopping-cart-adorned-graduation-cap-sits-344263590.jpg);
         background-size: cover;">
@@ -32,7 +36,7 @@
         </div>
     </header>
 
-    <!-- Category Filter -->
+     Category Filter -->
     <section class="category-filter">
         <div class="filter-container">
             <h3 class="filter-title">Filter by Category:</h3>
@@ -45,6 +49,12 @@
             </div>
         </div>
     </section>
+
+    <!-- Search results info -->
+    <div id="search-results-info" class="search-results-info" style="display: none; text-align: center; margin: 10px 0;">
+        <p>Showing results for: <span id="search-term"></span></p>
+        <button id="clear-search" class="btn">Clear Search</button>
+    </div>
 
     <!-- Products Section -->
     <section id="products" class="products-section">
@@ -60,7 +70,9 @@
                     <p>8th Edition, James Stewart. Excellent condition with minimal highlighting.</p>
                     <div class="product-footer">
                         <span class="product-price">₹00.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +86,9 @@
                     <p>CLRS, 3rd Edition. Like new condition, never used.</p>
                     <div class="product-footer">
                         <span class="product-price">₹450.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,7 +103,9 @@
                     <p>CASIO FX-991MS Scientific Scientific Calculator  (12 Digit), gently used with all functions working.</p>
                     <div class="product-footer">
                         <span class="product-price">₹500.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,7 +119,9 @@
                     <p>Set of 4 college-ruled notebooks with hardcovers. Brand new.</p>
                     <div class="product-footer">
                         <span class="product-price">₹0.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,7 +136,9 @@
                     <p>Dell Inspiron 15, 8GB RAM, 256GB SSD, i5 processor. Recently refurbished.</p>
                     <div class="product-footer">
                         <span class="product-price">₹25,000.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,10 +149,12 @@
                 </div>
                 <div class="product-content">
                     <h3>Wireless Headphones</h3>
-                    <p>Sony WH-1000XM3 Noise Cancelling Headphones. Lightly used.</p>
+                    <p>Boat370 Noise Cancelling Headphones. Lightly used.</p>
                     <div class="product-footer">
                         <span class="product-price">₹700.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,7 +169,9 @@
                     <p>Mechanical Lab coat, size M. Used for one semester only.</p>
                     <div class="product-footer">
                         <span class="product-price">₹40.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -161,7 +185,9 @@
                     <p>Safety goggles for chemistry lab. Used for few times.</p>
                     <div class="product-footer">
                         <span class="product-price">₹0.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,7 +200,9 @@
                     <p>T-Scale for ED lab. Used for one semester.</p>
                     <div class="product-footer">
                         <span class="product-price">₹35.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -187,7 +215,9 @@
                     <p>8th Edition (1 january 2019). Excellent condition with minimal highlighting.</p>
                     <div class="product-footer">
                         <span class="product-price">₹350.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,7 +230,9 @@
                     <p>Lamp for late night study sessions. Good condition.</p>
                     <div class="product-footer">
                         <span class="product-price">₹430.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -213,7 +245,9 @@
                     <p>Excellent condition bag. Used for couple of times for travelling purpose.</p>
                     <div class="product-footer">
                         <span class="product-price">₹800.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -226,7 +260,9 @@
                     <p>2nd Edition , Reema Thareja. Used for a year . Good condition.</p>
                     <div class="product-footer">
                         <span class="product-price">₹450.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,7 +275,9 @@
                     <p>ED Kit for Engineering Drawing lab. Used for one semester.</p>
                     <div class="product-footer">
                         <span class="product-price">₹65.00</span>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <div class="cart-button-container">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -307,10 +345,10 @@
     <footer>
         <div class="logo" style="margin-bottom: 1rem;">College Store</div>
         <div class="footer-links">
-            <a href="#">Home</a>
+            <a href="index.html">Home</a>
             <a href="#">Shop</a>
             <a href="sell.html">Sell</a>
-            <a href="#">Donate</a>
+            <a href="donate.html">Donate</a>
         </div>
         <p class="copyright">© 2025 College Store. All Rights Reserved.</p>
     </footer>

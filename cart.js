@@ -30,25 +30,72 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Product inventory management
+    // Clear existing inventory to ensure we start fresh
+    localStorage.removeItem('productInventory');
+    let productInventory = {};
+    
+    // Initialize inventory with exactly 1 item for each product
+    document.querySelectorAll('.product-card').forEach(card => {
+        const productName = card.querySelector('h3').textContent;
+        // Set quantity to exactly 1 for each product (limited stock)
+        productInventory[productName] = 1;
+    });
+    localStorage.setItem('productInventory', JSON.stringify(productInventory));
+    
+    // Update product availability display
+    function updateProductAvailability() {
+        document.querySelectorAll('.product-card').forEach(card => {
+            const productName = card.querySelector('h3').textContent;
+            const quantity = productInventory[productName] || 0;
+            
+            // Create or update availability element
+            let availabilityElement = card.querySelector('.product-availability');
+            if (!availabilityElement) {
+                availabilityElement = document.createElement('div');
+                availabilityElement.className = 'product-availability';
+                card.querySelector('.product-content').insertBefore(
+                    availabilityElement, 
+                    card.querySelector('.product-footer')
+                );
+            }
+            
+            // Update availability text and style
+            if (quantity <= 0) {
+                availabilityElement.textContent = 'Out of stock';
+                availabilityElement.style.color = 'red';
+                card.querySelector('.add-to-cart').disabled = true;
+                card.querySelector('.add-to-cart').style.opacity = '0.5';
+            } else {
+                // Always show "Only 1 left in stock!" since we're limiting to 1 per product
+                availabilityElement.textContent = 'Only 1 left in stock!';
+                availabilityElement.style.color = 'orange';
+                card.querySelector('.add-to-cart').disabled = false;
+                card.querySelector('.add-to-cart').style.opacity = '1';
+            }
+        });
+    }
+
     // Cart functionality
     let cart = {
         items: [],
         totalCount: 0
     };
-    function updateCartBadge() {
-    const cartBadge = document.getElementById('cart-badge');
     
-    if (cartBadge) {
-        cartBadge.textContent = cart.totalCount;
+    function updateCartBadge() {
+        const cartBadge = document.getElementById('cart-badge');
         
-        // Make the badge visible if there are items
-        if (cart.totalCount > 0) {
-            cartBadge.style.display = 'flex';
-        } else {
-            cartBadge.style.display = 'none';
+        if (cartBadge) {
+            cartBadge.textContent = cart.totalCount;
+            
+            // Make the badge visible if there are items
+            if (cart.totalCount > 0) {
+                cartBadge.style.display = 'flex';
+            } else {
+                cartBadge.style.display = 'none';
+            }
         }
     }
-}
 
     // Load cart from localStorage if exists
     const savedCart = localStorage.getItem('collegeStoreCart');
@@ -60,6 +107,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add to cart function
     function addToCart(productName, priceText) {
         try {
+            // Check inventory
+            if (productInventory[productName] <= 0) {
+                alert('Sorry, this item is out of stock.');
+                return;
+            }
+            
             // Parse price (remove $ sign and convert to number)
             const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
             
@@ -71,7 +124,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const existingItem = cart.items.find(item => item.name === productName);
             
             if (existingItem) {
-                existingItem.quantity++;
+                // User can only add 1 of each item
+                alert('You can only add 1 of each item to your cart.');
+                return;
             } else {
                 cart.items.push({
                     name: productName,
@@ -80,9 +135,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             
+            // Decrease inventory
+            productInventory[productName]--;
+            localStorage.setItem('productInventory', JSON.stringify(productInventory));
+            
             cart.totalCount++;
             updateCartBadge();
             saveCart();
+            updateProductAvailability();
+            updateCartButtons();
         } catch (error) {
             console.error('Error adding to cart:', error);
         }
@@ -98,9 +159,16 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 cart.items.splice(itemIndex, 1);
             }
+            
+            // Increase inventory
+            productInventory[productName]++;
+            localStorage.setItem('productInventory', JSON.stringify(productInventory));
+            
             cart.totalCount--;
             updateCartBadge();
             saveCart();
+            updateProductAvailability();
+            updateCartButtons();
         }
     }
 
@@ -125,6 +193,66 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Update cart buttons to show quantity and delete option
+    function updateCartButtons() {
+        document.querySelectorAll('.product-card').forEach(card => {
+            const productName = card.querySelector('h3').textContent;
+            const existingItem = cart.items.find(item => item.name === productName);
+            const cartButtonContainer = card.querySelector('.cart-button-container');
+            
+            // Create cart button container if it doesn't exist
+            if (!cartButtonContainer) {
+                const newCartButtonContainer = document.createElement('div');
+                newCartButtonContainer.className = 'cart-button-container';
+                card.querySelector('.product-footer').appendChild(newCartButtonContainer);
+                
+                // Move the add to cart button to the container
+                const addToCartBtn = card.querySelector('.add-to-cart');
+                if (addToCartBtn) {
+                    newCartButtonContainer.appendChild(addToCartBtn);
+                }
+            }
+            
+            // Get the container (either existing or newly created)
+            const container = card.querySelector('.cart-button-container') || 
+                              card.querySelector('.product-footer');
+            
+            // Update or create quantity display
+            let quantityDisplay = card.querySelector('.cart-quantity');
+            if (existingItem) {
+                if (!quantityDisplay) {
+                    quantityDisplay = document.createElement('div');
+                    quantityDisplay.className = 'cart-quantity';
+                    container.appendChild(quantityDisplay);
+                }
+                quantityDisplay.textContent = `In cart: ${existingItem.quantity}`;
+                quantityDisplay.style.display = 'block';
+                
+                // Add remove button if it doesn't exist
+                let removeButton = card.querySelector('.remove-from-cart');
+                if (!removeButton) {
+                    removeButton = document.createElement('button');
+                    removeButton.className = 'remove-from-cart';
+                    removeButton.textContent = 'Remove';
+                    removeButton.addEventListener('click', function() {
+                        removeFromCart(productName);
+                    });
+                    container.appendChild(removeButton);
+                }
+            } else {
+                // Hide quantity display and remove button if item is not in cart
+                if (quantityDisplay) {
+                    quantityDisplay.style.display = 'none';
+                }
+                
+                const removeButton = card.querySelector('.remove-from-cart');
+                if (removeButton) {
+                    removeButton.style.display = 'none';
+                }
+            }
+        });
+    }
+
     // Initialize cart buttons
     function initializeCartButtons() {
         document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -133,6 +261,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add new click handler
             button.addEventListener('click', handleAddToCart);
         });
+        
+        // Update cart buttons to show quantity and delete option
+        updateCartButtons();
     }
 
     function handleAddToCart() {
@@ -140,21 +271,38 @@ document.addEventListener('DOMContentLoaded', function() {
         const productName = productCard.querySelector('h3').textContent;
         const price = productCard.querySelector('.product-price').textContent;
         addToCart(productName, price);
-        
-        // Visual feedback
-        this.textContent = 'Added!';
-        setTimeout(() => {
-            this.textContent = 'Add to Cart';
-        }, 1000);
     }
 
-    // Initialize buttons when page loads
+    // Initialize product availability and buttons when page loads
+    updateProductAvailability();
     initializeCartButtons();
 
     // Also initialize when products are filtered
     document.querySelectorAll('.filter-button').forEach(button => {
         button.addEventListener('click', function() {
-            setTimeout(initializeCartButtons, 50);
+            setTimeout(() => {
+                updateProductAvailability();
+                initializeCartButtons();
+            }, 50);
         });
     });
+    
+    // Initialize search functionality if search bar exists
+    const searchInput = document.getElementById('product-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            document.querySelectorAll('.product-card').forEach(card => {
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const productDesc = card.querySelector('p').textContent.toLowerCase();
+                
+                if (productName.includes(searchTerm) || productDesc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
 });

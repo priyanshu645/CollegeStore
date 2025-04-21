@@ -25,6 +25,56 @@ header {
     align-items: center;
     padding: 0.5rem 2rem;
     background-color: #2c3e50;
+    flex-wrap: wrap;
+}
+
+/* Search container styles */
+.search-container {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+}
+
+.search-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #2980b9;
+}
+
+.search-results-info {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+#clear-search {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#clear-search:hover {
+    background-color: #5a6268;
 }
 
 .logo {
@@ -206,6 +256,42 @@ header {
     border-top: 1px solid #ecf0f1;
 }
 
+/* Cart button container styles */
+.cart-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.cart-quantity {
+    font-size: 0.8rem;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.remove-from-cart {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-from-cart:hover {
+    background-color: #c0392b;
+}
+
+/* Product availability styles */
+.product-availability {
+    font-size: 0.85rem;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
 .product-price {
     font-weight: bold;
     color: #2c3e50;
@@ -219,6 +305,11 @@ header {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.add-to-cart:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
 }
 
 .add-to-cart:hover {
