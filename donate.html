@@ -380,6 +380,9 @@
                 width: 100%;
             }
         }
+        html {
+  scroll-behavior: smooth;
+}
     </style>
 </head>
 
@@ -464,6 +467,21 @@
                         <option value="lab">Lab Equipment</option>
                         <option value="other">Other</option>
                     </select>
+                    <div class="form-group">
+                        <label for="photos" class="form-label">Upload Photos</label>
+                        <input type="file" id="photos" class="form-control" accept="image/*" multiple>
+                    </div>
+                    <div class="form-group">
+                        <label for="condition" class="form-label">Condition</label>
+                        <select id="condition" class="form-control" required>
+                            <option value="">Select condition</option>
+                            <option value="new">New</option>
+                            <option value="like-new">Like New</option>
+                            <option value="good">Good</option>
+                            <option value="fair">Fair</option>
+                            <option value="poor">Poor</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">Description of items</label>
@@ -472,6 +490,10 @@
                 <div class="form-group">
                     <label for="pickup">Preferred pickup date & time</label>
                     <input type="datetime-local" id="pickup" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="location" class="form-label">Preferred Meeting Location on Campus</label>
+                    <input type="text" id="location" class="form-control" placeholder="e.g., College Ground" required>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="cta-button" style="border: none; cursor: pointer; width: 100%;">Submit
@@ -532,6 +554,12 @@
         </div>
         <p class="copyright">© 2025 College Store. All Rights Reserved.</p>
     </footer>
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Your listing has been submitted successfully! Once approved, it will appear in the marketplace.');
+        });
+    </script>
 </body>
-
 </html>

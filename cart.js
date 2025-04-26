@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.product-card').forEach(card => {
         const productName = card.querySelector('h3').textContent;
         // Set quantity to exactly 1 for each product (limited stock)
-        productInventory[productName] = 1;
+        productInventory[productName] = 4;
     });
     localStorage.setItem('productInventory', JSON.stringify(productInventory));
     
@@ -68,10 +68,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.querySelector('.add-to-cart').style.opacity = '0.5';
             } else {
                 // Always show "Only 1 left in stock!" since we're limiting to 1 per product
-                availabilityElement.textContent = 'Only 1 left in stock!';
+              //  availabilityElement.textContent = 'Only 1 left in stock!';
                 availabilityElement.style.color = 'orange';
                 card.querySelector('.add-to-cart').disabled = false;
-                card.querySelector('.add-to-cart').style.opacity = '1';
+                card.querySelector('.add-to-cart').style.opacity = '4';
             }
         });
     }
@@ -124,9 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const existingItem = cart.items.find(item => item.name === productName);
             
             if (existingItem) {
-                // User can only add 1 of each item
-                alert('You can only add 1 of each item to your cart.');
-                return;
+                // Increment quantity if item already in cart
+                existingItem.quantity++;
             } else {
                 cart.items.push({
                     name: productName,
@@ -175,9 +174,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update cart badge
     function updateCartBadge() {
         const cartBadge = document.getElementById('cart-badge');
+        
         if (cartBadge) {
             cartBadge.textContent = cart.totalCount;
-            cartBadge.style.display = cart.totalCount > 0 ? 'block' : 'none';
+            
+            // Make the badge visible if there are items
+            if (cart.totalCount > 0) {
+                cartBadge.style.display = 'flex';
+            } else {
+                cartBadge.style.display = 'none';
+            }
         }
     }
 
